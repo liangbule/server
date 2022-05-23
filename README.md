@@ -6,3 +6,11 @@ init.....
 ```
 node src/main.js
 ```
+# 监听文件改变自动启动更新
+```
+npm i nodemon
+```
+# 读取env配置文件
+```
+npm i dotenv
+```
