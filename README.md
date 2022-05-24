@@ -24,3 +24,7 @@ npm install koa-router
 2、实例化对象
 3、编写路由
 4、注册中间件
+# 目录结构
+app 业务文件
+config 配置文件
+router 路由文件

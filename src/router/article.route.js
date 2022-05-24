@@ -1,10 +1,11 @@
 const Router = require("koa-router");
+const { register, login } = require("../controller/user.controller");
 
 const router = new Router({ prefix: "/user" });
 
-// GET
-router.get("/", (ctx, next) => {
-  ctx.body = "user api";
-});
+// POST 注册接口
+router.post("/register", register);
 
-module.exports = router
+// 登录接口
+router.post("/login", login);
+module.exports = router;
