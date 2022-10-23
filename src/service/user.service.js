@@ -7,7 +7,7 @@ class UserService {
 
     async setUserSession(ctx) {
         const {body} = ctx.request; // 前端存储数据
-        console.log('用户session')
+        console.log('用户session', body)
         ctx.session.userinfo = body.username;
     }
 }
