@@ -28,3 +28,17 @@ npm install koa-router
 app 业务文件
 config 配置文件
 router 路由文件
+# 安装Koa-Body
+npm install koa-body
+# 安装数据库 
+npm install mongodb mongoose
+# 安装sequelize 数据库操作
+npm install --save sequelize
+sequelize ORM数据库工具
+ORM：对象关系映射
+- 数据表映射（对应）一个类
+- 数据表中的数据行（记录）对应一个对象
+- 数据表字段对应对象的属性
+- 数据表的操作对应对象的方法
+
+

@@ -4,7 +4,12 @@
 /node_modules
 # production
 /build
-
+#日志和数据库#
+* .log
+* .sql
+* .sqlite
+#
+/src/logger
 # misc
 .DS_Store
 .env.local
