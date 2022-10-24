@@ -4,6 +4,7 @@ const {signing} = require("../controller/user.controller");
 const authLogin = require("../middleware/auth")
 const jwt = require("jsonwebtoken")
 const jwtAuth = require('koa-jwt')
+const bouncer = require('koa-bouncer');
 // 添加前缀
 const router = new Router({prefix: "/user"});
 // 秘钥
@@ -61,18 +62,42 @@ router.post('/signing', (ctx, next) => signing(ctx, next))
 router.post('/signing-token', (ctx, next) => {
     // 得到用户信息
     const userInfo = ctx.request.body
-    let token = jwt.sign({
-        data: userInfo.username,
-        exp: Math.floor(Date.now() / 1000) + (60 * 60), // 一个小时时效
-    }, secret)
+    try {
+        ctx.validateBody('username')
+            .required('用户名必填')
+            .isString()
+            .trim()
+            .isLength(4, 15, '账户名必须位4-15位')
+        ctx.validateBody('password')
+            .required('Password required')
+            .isString()
+            .isLength(6, 8, '密码必须是6-8位')
 
-    ctx.body = {
-        code: "0",
-        success: true,
-        userInfo: userInfo.username,
-        token: token,
+        ctx.body = {
+            message: "校验通过",
+            res: ctx.vals,
+        }
+    } catch (err) {
+        if (err instanceof bouncer.ValidationError) {
+            ctx.status = 400;
+            ctx.body = {
+                message: "校验失败" + err.message
+            }
+            return;
+        }
+        throw err;
     }
-    console.log('userInfo', userInfo)
+
+    // let token = jwt.sign({
+    //     data: userInfo.username,
+    //     exp: Math.floor(Date.now() / 1000) + (60 * 60), // 一个小时时效
+    // }, secret)
+    // ctx.body = {
+    //     code: "0",
+    //     success: true,
+    //     userInfo: userInfo.username,
+    //     token: token,
+    // }
 })
 // TODO 第三方登录 短信登录
 

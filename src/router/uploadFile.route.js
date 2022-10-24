@@ -1,10 +1,11 @@
 const Router = require("koa-router");
 const router = new Router({prefix: "/uploadFile"});
 const multer = require('@koa/multer') // 引入
+const su = '../public/uploads'
 const path = require('path')
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-        cb(null, path.join(__dirname, '../public/uploads')) // 文件存储目录，注意必须存在该目录，否则报错
+        cb(null, su) // 文件存储目录，注意必须存在该目录，否则报错
     },
     filename: function (req, file, cb) {
         const fileFormat = (file.originalname).split('.')
@@ -28,12 +29,18 @@ router.post(
         console.log('ctx.request.file', ctx.request.file);
         console.log('ctx.file', ctx.file);
         console.log('ctx.request.body', ctx.request.body);
-        ctx.body = 'done';
+        // ctx.body = {
+        //     imagPath: ctx.request.file.path,
+        //     filename: ctx.request.file, //返回文件名
+        //     message: "成功"
+        // }
     }
 );
 router.post('/upload', upload.single('file'), async (ctx, next) => {
+    // let imagPath = ctx.request.file.destination + ctx.request.file.
     ctx.body = {
-        filename: ctx.request.file?.filename, //返回文件名
+        imagPath: ctx.request.file.path,
+        filename: ctx.request.file, //返回文件名
         message: "成功"
     }
 });

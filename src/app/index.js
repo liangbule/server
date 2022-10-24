@@ -2,12 +2,13 @@ const Koa = require("koa");
 const KoaBody = require("koa-body");
 const mongoose = require("mongoose");
 const {Sequelize} = require('sequelize');
-const session = require('koa-session')
-const cors = require('koa2-cors')
+const session = require('koa-session');
+const cors = require('koa2-cors');
+const bouncer = require('koa-bouncer');
 // 控制台日志
 const cmdLog = require('koa-logger')
 // 持久化日志
-const {accessLogger, logger} = require('../logger')
+const {accessLogger} = require('../logger')
 // 托管静态资源
 const static = require('koa-static')
 // post请求
@@ -26,6 +27,7 @@ const SESSION_CONFIG = {
 const app = new Koa()
 // 对session加密签名
 app.keys = ['some secret hurr']
+app.use(bouncer.middleware());
 app.use(session(SESSION_CONFIG, app))
 // 打印日志
 app.use(cmdLog())
@@ -38,7 +40,7 @@ app.use(cors({
     },
 }))
 // 托管静态资源
-app.use(static(__dirname + '/public'))
+// app.use(static(__dirname + '/public'))
 // 注册路由
 app.use(Router.routes())
 Router.allowedMethods()
