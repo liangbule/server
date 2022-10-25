@@ -5,6 +5,7 @@ const authLogin = require("../middleware/auth")
 const jwt = require("jsonwebtoken")
 const jwtAuth = require('koa-jwt')
 const bouncer = require('koa-bouncer');
+const Mongo = require('../db/mongodb_serve')
 // 添加前缀
 const router = new Router({prefix: "/user"});
 // 秘钥
@@ -58,6 +59,39 @@ router.get('/delete', (ctx, next) => {
  * 登录接口
  */
 router.post('/signing', (ctx, next) => signing(ctx, next))
+router.get('/getRegister', async (ctx, next) => {
+    let res = await Mongo.col('admin').find().toArray()
+    console.log(res)
+    if (res.length >= 1) {
+        ctx.body = {
+            code: 0,
+            data: res,
+            message: "success"
+        }
+    } else {
+        ctx.body = {
+            code: 0,
+            message: "查询失败"
+        }
+    }
+})
+// 注册账号
+router.post('/register', (ctx, next) => {
+    try {
+        const {username, password} = ctx.request.body
+        Mongo.col('admin').insertOne({
+            username,
+            password,
+        })
+        ctx.body = {
+            code: 0,
+            message: "success"
+        }
+    } catch (err) {
+        console.log('连接失败')
+    }
+
+})
 // 生成token
 router.post('/signing-token', (ctx, next) => {
     // 得到用户信息

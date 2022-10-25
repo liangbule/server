@@ -1,7 +1,4 @@
 const Koa = require("koa");
-const KoaBody = require("koa-body");
-const mongoose = require("mongoose");
-const {Sequelize} = require('sequelize');
 const session = require('koa-session');
 const cors = require('koa2-cors');
 const bouncer = require('koa-bouncer');
@@ -18,6 +15,7 @@ const Router = require('../router/index')
 const RouterArticle = require('../router/article.route')
 const RouterUser = require('../router/user.route')
 const UploadFile = require('../router/uploadFile.route')
+const Basic = require('../router/basic.router')
 const SESSION_CONFIG = {
     key: 'wc', // 设置cookie签名
     maxAge: 840000, // 默认一天
@@ -40,7 +38,7 @@ app.use(cors({
     },
 }))
 // 托管静态资源
-// app.use(static(__dirname + '/public'))
+app.use(static(__dirname + '/public'))
 // 注册路由
 app.use(Router.routes())
 Router.allowedMethods()
@@ -53,17 +51,8 @@ RouterUser.allowedMethods()
 // 上传文件
 app.use(UploadFile.routes())
 UploadFile.allowedMethods()
-
-
-// 如果有用户名与密码的连接方式 mongoose.connect('mongodb://用户名:密码@地址:端口号/数据库');
-// mongoose.connect('mongodb://root:111111@localhost/Test');
-
-/* 连接到数据库  mongoose.connect('mongodb://端口号/数据库');     */
-const connectionStr = "mongodb://localhost:27017/serverdb"
-mongoose.connect(connectionStr, (err) => {
-    if (err) console.log("mongonDB连接失败了");
-    console.log("mongonDB连接成功了");
-});
-
+// 工具类路由
+app.use(Basic.routes())
+Basic.allowedMethods()
 
 module.exports = app;

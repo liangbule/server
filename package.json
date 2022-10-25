@@ -29,6 +29,7 @@
     "mongoose": "^6.3.4",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^2.3.3",
-    "sequelize": "^6.20.1"
+    "sequelize": "^6.20.1",
+    "trek-captcha": "^0.4.0"
   }
 }
