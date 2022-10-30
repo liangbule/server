@@ -1,7 +1,8 @@
-const {APP_PORT} = require('./config/config.default')
+const config = require('./config')
 
 const app = require('./app/index')
 
-app.listen(APP_PORT,() => {
-    console.log(`server is running on http://localhost:${APP_PORT}`);
+
+app.listen(config.port, () => {
+    console.log(`server is running on http://localhost:${config.port}`);
 }) 
