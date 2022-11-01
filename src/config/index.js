@@ -1,5 +1,5 @@
 module.exports = {
-    host: "http://127.0.0.1:8080",
+    host: "http://127.0.0.1:27017",
     port: 8080,
     // 数据库相关
     db: {
